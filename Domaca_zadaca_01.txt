@@ -1,0 +1,223 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace domaca_zadaca1
+{
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var Menu = new List<Tuple<string, string, string, int>>();
+
+            Tuple<string, string, string, int> person1 = new Tuple<string, string, string, int>("Josip", "surname", "pujanke", 123456);
+            Tuple<string, string, string, int> person2 = new Tuple<string, string, string, int>("ante", "antic", "sucidar", 1234567);
+            Tuple<string, string, string, int> person3 = new Tuple<string, string, string, int>("mate", "matic", "kman", 1234565);
+            Tuple<string, string, string, int> person4 = new Tuple<string, string, string, int>("ivan", "ivic", "poljicka", 123454);
+
+            Menu.Add(person1);
+            Menu.Add(person2);
+            Menu.Add(person3);
+            Menu.Add(person4);
+
+            bool escape = true;
+            while (escape)
+            {
+                string adress;
+                string name;
+                string surname;
+                int phoneNum;
+
+                Console.WriteLine(" unesite 1 za dodavanje novog upisa\n unesite 2 " +
+                "za promjenu imena/adrese/broja\n unesite 3 za brisanje kontakta\n " +
+                "unesite 4 za pretragu po broju\n unesite 5 za pretragu po imenu,\n unesite 6 za ispis imenika");
+
+                int caseSwitch = int.Parse(System.Console.ReadLine());
+
+                switch (caseSwitch)
+                {
+                    case 1:
+                        Console.WriteLine("enter the name");
+                        name = Console.ReadLine();
+
+                        Console.WriteLine("enter the surname");
+                        surname = Console.ReadLine();
+
+                        Console.WriteLine("enter the adress");
+                        adress = Console.ReadLine();
+
+                        Console.WriteLine("enter the phone number");
+                        phoneNum = int.Parse(System.Console.ReadLine());
+
+                        Console.WriteLine("enter the phone number again");
+                        int phoneNumberCheck = int.Parse(System.Console.ReadLine());
+
+                        if (phoneNum != phoneNumberCheck)
+                        {
+                            Console.WriteLine("phone numbers dont match, try again");
+                            goto case 1;
+                        }
+
+                        Console.WriteLine("conifirm, yes or no");
+
+                        string c = Console.ReadLine();
+
+                        if (c == "yes" || c == "Yes" || c == "y" || c == "Y")
+                        {
+                            Tuple<string, string, string, int> person = new Tuple<string, string, string, int>(name, surname, adress, phoneNum);
+                            Menu.Add(person);
+                        }
+                        break;
+                 
+                    case 2:
+                        int contactChange;
+                        
+                        Console.WriteLine("Press 1 to change name, press 2 to change adress, press 3 to change phone number");
+                        contactChange = int.Parse(System.Console.ReadLine());
+                        if (contactChange == 1)
+                        {
+                            int indexOfPerson = 0;
+                            Console.WriteLine("enter the name of contact you want to change");
+                            string nameChange = Console.ReadLine();
+                            Console.WriteLine("enter the new name");
+                            string newName = Console.ReadLine();
+                            foreach (var item in Menu)
+                            {
+                               
+                                if (item.Item1.Equals(nameChange))
+                                {
+                                    //napravit novi tuple i stavit u njega vrijednosti iz starog osim imena, stavit novo ime a stari tuple izbrisat
+                                    Tuple<string, string, string, int> person5 = new Tuple<string, string, string, int>(newName, item.Item2, item.Item3, item.Item4);
+                                    Menu.Add(person5);
+
+                                    Menu.RemoveAt(indexOfPerson);
+                                }
+                                indexOfPerson++;
+                            }
+                        }
+                        if (contactChange == 2)
+                        {
+                            int indexOfPersonSurname = 0;
+                            Console.WriteLine("enter the surname of contact you want to change");
+                            string surnameChange = Console.ReadLine();
+                            Console.WriteLine("enter the new name");
+                            string newSurname = Console.ReadLine();
+                            foreach (var surItem in Menu)
+                            {
+                                
+                                if (surItem.Item2.Equals(surnameChange))
+                                {
+                                    Tuple<string, string, string, int> person5 = new Tuple<string, string, string, int>(surItem.Item1, newSurname, surItem.Item3, surItem.Item4);
+                                    Menu.Add(person5);
+
+                                    Menu.RemoveAt(indexOfPersonSurname);
+                                }
+                                indexOfPersonSurname++;
+                            }
+                        }
+                        if (contactChange == 3)
+                        {
+                            int indexOfPersonNumber = 0;
+                            Console.WriteLine("enter the new phone number of contact you want to change");
+                            string numberChange = Console.ReadLine();
+                            Console.WriteLine("enter the new number");
+                            int newNumber = int.Parse(System.Console.ReadLine()); 
+                            foreach (var numItem in Menu)
+                            {
+
+                                if (numItem.Item2.Equals(numberChange))
+                                {
+                                    Tuple<string, string, string, int> person5 = new Tuple<string, string, string, int>(numItem.Item1, numItem.Item2, numItem.Item3, newNumber);
+                                    Menu.Add(person5);
+
+                                    Menu.RemoveAt(indexOfPersonNumber);
+                                }
+                                indexOfPersonNumber++;
+                            }
+                        }
+                        break;
+
+
+                    case 5:
+                        Console.WriteLine("enter the keyword");
+                        int cnt = 0;
+                        string keyword = Console.ReadLine(); 
+                        foreach (var key in Menu)
+                        {
+                            if (key.Item1.Equals(keyword))
+                            {
+                                Console.Write(key);
+                                cnt++;
+                            }
+                            if (key.Item2.Equals(keyword))
+                            {
+                                Console.Write(key);
+                                cnt++;
+                            }
+                            if (key.Item3.Equals(keyword))
+                            {
+                                Console.Write(key);
+                                cnt++;
+                            }
+                        }
+                        if (cnt == 0)
+                        {
+                            Console.WriteLine("keyword not found");
+                        }
+                        break;
+
+
+                    case 3:
+                        Console.WriteLine("enter the number of contact you want to delete");
+                        int i = 0;
+                        foreach (object o in Menu)
+                        {
+                            Console.WriteLine(i);
+                            Console.WriteLine(o);
+                            i++;
+                        }
+                        int lst;
+                        lst = int.Parse(System.Console.ReadLine());
+                        Menu.RemoveAt(lst);
+                        break;
+
+
+                    case 4:
+                        int phoneNumber;
+                        int count = 0;
+                        Console.WriteLine("enter the phone number");
+                        phoneNumber = int.Parse(System.Console.ReadLine());
+                        foreach (var phoneVar in Menu)
+                        {
+                            if (phoneVar.Item4.Equals(phoneNumber))
+                            {
+                                Console.WriteLine(phoneVar);
+                                count++;
+                            }
+                        }
+                        if (count == 0)
+                            Console.WriteLine("phone number not found");
+                        break;
+
+                    case 6:
+                        foreach (var print in Menu)
+                        {
+                            Console.WriteLine(print);
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Press 0 to quit");
+                        int quit = int.Parse(System.Console.ReadLine());
+                        if (quit == 0)
+                        {
+                            escape = false;
+                        }
+
+                        break;
+                }
+                Console.WriteLine("\n\n\n");
+            }
+        }
+    }
+}
